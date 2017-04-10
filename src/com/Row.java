@@ -123,7 +123,17 @@ public class Row {
     public void MakeResultPermitation() {
         resultPermutations = new ArrayList<>();
         resultPermutations.add(new Permutation(permutations.get(0).GetPermutation(), permutations.get(0).GetPossibility()));
+        List<Permutation>temp = new ArrayList<>();
+        double tempPossibility = 0.0;
         for (Permutation perm : permutations) {
+            /*if (tempPossibility != perm.GetPossibility()) {
+                tempPossibility = perm.GetPossibility();
+                Random r = new Random(System.nanoTime());
+                resultPermutations.add(temp.get(r.nextInt(temp.size())));
+                temp.clear();
+            }
+            temp.add(perm);*/
+
             if (perm.GetPossibility() != resultPermutations.get(resultPermutations.size() - 1).GetPossibility()) {
                 resultPermutations.add(new Permutation(perm.GetPermutation(), perm.GetPossibility()));
             }

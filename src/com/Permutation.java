@@ -41,7 +41,7 @@ public class Permutation {
 
     public static class Comparators {
         public static final Comparator<Permutation> Possibility =
-                (Permutation o1, Permutation o2) -> (int) ((o1.possibility - o2.possibility) * 100);
+                (Permutation o1, Permutation o2) -> (int) ((o2.possibility - o1.possibility) * 100);
     }
 
     public void PrintPermutations() {

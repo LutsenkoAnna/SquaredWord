@@ -126,33 +126,39 @@ public class SquaredWord {
         for (Row r: square) {
             int j = 0;
             //TODO: не берет последний элемент массива
-            //TODO: добавить рандом (по-моему пока присваивает не тому)
-            for (int i = 0; i < r.GetPermutationsForRemoveCount();) {
+            //TODO: добавить рандом
+            /*for (int i = 0; i < r.GetPermutationsForRemoveCount();) {
                 ++j;
-                r.GetPermutationById(j).SetPossibility(1.0 - (CheckVertical() + CheckDiagonal()) * 1.0 / (square.size() * square.size()));
+                r.GetPermutationById(j).SetPossibility(CheckVertical() + CheckDiagonal());
+                r.GenerateRandom(isRandom);
+            }*/
+            while(r.GetPermutationsForRemoveCount() > 0) {
+                Random rando = new Random(System.nanoTime());
+                int size = rando.nextInt(r.GetPermutationsForRemoveCount() + 1);
+                if (size == r.GetPermutationsForRemoveCount())
+                    size = r.GetPermutationsForRemoveCount() - 1;
+                r.GetPermutationByString(r.GetPermutationForRemoveById(size).GetPermutation()).SetPossibility(CheckVertical() + CheckDiagonal());
                 r.GenerateRandom(isRandom);
             }
             Collections.sort(r.GetPermutations(), Permutation::compareTo);
             r.MakeResultPermitation();
         }
-        //PrintRowPermutations(3);
+        /*
         PrintRowResultPermutations(0);
         PrintRowResultPermutations(1);
         PrintRowResultPermutations(2);
-        PrintRowResultPermutations(3);
-        PrintRowResultPermutations(4);
-        do {
-            for (Row row : square) {
-                Random r = new Random(System.nanoTime());
-                int index = r.nextInt((int) (Math.pow(2, row.resultPermutations.size()))) + 1;
-                int log = (int) (Math.log(index) / Math.log(2));
-                if (log >= row.resultPermutations.size())
-                    log = row.resultPermutations.size() - 1;
-                row.SetRow(row.resultPermutations.get(log).GetPermutation());
-            }
-            //Print();
-        } while (CheckVertical() + CheckDiagonal() > 0);
-
+        PrintRowResultPermutations(3);*/
+        PrintRowPermutations(1);
+        PrintRowResultPermutations(1);
+        for (Row row : square) {
+            Random r = new Random(System.nanoTime());
+            int index = r.nextInt((int) (Math.pow(2, row.resultPermutations.size() - 1))) + 1;
+            int log = (int) (Math.log(index) / Math.log(2));
+            row.SetRow(row.resultPermutations.get(log).GetPermutation());
+        }
+            Print();
+        if (CheckVertical() + CheckDiagonal() == 0)
+            return true;
         return false;
     }
 

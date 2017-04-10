@@ -13,10 +13,15 @@ public class Main {
         /*do {
             sw = new SquaredWord(d, str, true);
             ++countOfMakingNewSquare;
-        } while (!sw.GreedyAlgorithm());*/
-        sw = new SquaredWord(d, str, false);
+        } while (!sw.GreedyAlgorithm());
+            sw.Print();*/
+        do {
+            sw = new SquaredWord(d, str, true);
+            ++countOfMakingNewSquare;
+
+            System.out.println("\nCountOfMakingNewSquare = " + countOfMakingNewSquare);
+        } while(!sw.GreedyAlgorithm2());
         sw.Print();
-        sw.GreedyAlgorithm2();
         System.out.println("\nCountOfMakingNewSquare = " + countOfMakingNewSquare);
     }
 }
