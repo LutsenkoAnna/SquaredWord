@@ -14,17 +14,8 @@ public class Permutation {
         this.possibility = newPossibility;
     }
 
-    public Permutation() {
-        this.permutation = new String();
-        this.possibility = 0.0;
-    }
-
     public String GetPermutation() {
         return permutation;
-    }
-
-    public void SetPermutation(String newPermutation) {
-        permutation = new String(newPermutation);
     }
 
     public double GetPossibility() {

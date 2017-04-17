@@ -14,13 +14,13 @@ public class SquaredWord {
 
     SquaredWord(String dictionary, String rows, boolean isRandom) {
         dict = new Dictionary(dictionary);
-        permutations = new ArrayList<String>();
+        permutations = new ArrayList<>();
         conf = new Conflicts(dictionary);
         this.isRandom = isRandom;
         CreatePermutations("", dict.GetDictionary());
         ParseRows(rows);
         for (Row r: square) {
-            r.GenerateRandom(isRandom); //TODO: Надо что-то придумать с рандомом! Чтобы не менять на методах
+            r.GenerateRandom(isRandom);
         }
     }
 
@@ -58,19 +58,6 @@ public class SquaredWord {
         }
     }
 
-    public void PrintAllPermutations() {
-        for (String p: permutations)
-            System.out.println(p);
-    }
-
-    public void PrintRowPermutations(int i) {
-        square.get(i).PrintPermutations();
-    }
-
-    public void PrintRowResultPermutations(int i) {
-        square.get(i).PrintResultPermutations();
-    }
-
     public int CheckVertical() {
         conf.SetTempConflicts(0);
         for (int i = 0; i < square.size(); ++i) {
@@ -83,22 +70,19 @@ public class SquaredWord {
         return conflicts;
     }
 
-    public int CheckVerticalForPermutation(String perm) {
-        conf.SetTempConflicts(0);
-        for (int i = 0; i < square.size(); ++i) {
-            for (int j = 0; j < square.size(); ++j) {
-                //conf.SetRepetition(square.get(j).GetRow().charAt(i));
-                conf.SetRepetition(perm.charAt(i));
-            }
-            conf.CheckConf();
-        }
-        int conflicts = conf.GetTempConflicts();
-        return conflicts;
-    }
-
     //TODO
     private int CheckDiagonal() {
-        return 0;
+        conf.SetTempConflicts(0);
+        for (int i = 0; i < square.size(); ++i) {
+            conf.SetRepetition(square.get(i).GetRow().charAt(i));
+        }
+        conf.CheckConf();
+        for (int i = square.size() - 1; i >= 0; --i) {
+            conf.SetRepetition(square.get(i).GetRow().charAt(i));
+        }
+        conf.CheckConf();
+        int conflicts = conf.GetTempConflicts();
+        return conflicts;
     }
 
 
@@ -115,7 +99,6 @@ public class SquaredWord {
                     conf.SetTotalConflicts(diff);
                 }
                 square.get(j).GenerateRandom(isRandom);
-                //Print();
             }
         }
         return false;
@@ -125,14 +108,12 @@ public class SquaredWord {
         Random rand = new Random(System.nanoTime());
         for (Row r: square) {
             int j = 0;
-            //TODO: не берет последний элемент массива
-            //TODO: добавить рандом
             /*for (int i = 0; i < r.GetPermutationsForRemoveCount();) {
                 ++j;
                 r.GetPermutationById(j).SetPossibility(CheckVertical() + CheckDiagonal());
                 r.GenerateRandom(isRandom);
             }*/
-            while(r.GetPermutationsForRemoveCount() > 0) {
+           while(r.GetPermutationsForRemoveCount() > 0) {
                 Random rando = new Random(System.nanoTime());
                 int size = rando.nextInt(r.GetPermutationsForRemoveCount() + 1);
                 if (size == r.GetPermutationsForRemoveCount())
@@ -143,20 +124,12 @@ public class SquaredWord {
             Collections.sort(r.GetPermutations(), Permutation::compareTo);
             r.MakeResultPermitation();
         }
-        /*
-        PrintRowResultPermutations(0);
-        PrintRowResultPermutations(1);
-        PrintRowResultPermutations(2);
-        PrintRowResultPermutations(3);*/
-        PrintRowPermutations(1);
-        PrintRowResultPermutations(1);
         for (Row row : square) {
             Random r = new Random(System.nanoTime());
             int index = r.nextInt((int) (Math.pow(2, row.resultPermutations.size() - 1))) + 1;
             int log = (int) (Math.log(index) / Math.log(2));
             row.SetRow(row.resultPermutations.get(log).GetPermutation());
         }
-            Print();
         if (CheckVertical() + CheckDiagonal() == 0)
             return true;
         return false;

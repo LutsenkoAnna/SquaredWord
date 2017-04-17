@@ -24,13 +24,6 @@ public class Row {
         MakePermutations(perm);
     }
 
-    public Row(String word, int number) {
-        this.row = word;
-        this.rowNumber = number;
-        this.permutations = new ArrayList<>();
-        this.permutationsForRemove = new ArrayList<>();
-    }
-
     private void MakePermutations(List<String> perm) {
         for (String p: perm) {
             if (p.matches(row)) {
@@ -44,10 +37,6 @@ public class Row {
         return row;
     }
 
-    public int GetRowNumber() {
-        return rowNumber;
-    }
-
     public void SetRow(String newRow) {
         row = newRow;
     }
@@ -55,10 +44,6 @@ public class Row {
 
     public void SetBestRow(String newBestRow) {
         bestRow = new String(newBestRow);
-    }
-
-    public int GetPermutationsCount() {
-        return permutations.size();
     }
 
     public int GetPermutationsForRemoveCount() {
@@ -71,18 +56,6 @@ public class Row {
         else
             System.out.print(row);
         System.out.println();
-    }
-
-    public void PrintPermutations() {
-        System.out.println("\n--------Permutation of row " + row + "--------\n");
-        for (Permutation p: permutations)
-            p.PrintPermutations();
-    }
-
-    public void PrintResultPermutations() {
-        System.out.println("\n--------Permutation of row " + row + "--------\n");
-        for (Permutation p: resultPermutations)
-            p.PrintPermutations();
     }
 
     public List<Permutation> GetPermutations() {
@@ -124,16 +97,7 @@ public class Row {
         resultPermutations = new ArrayList<>();
         resultPermutations.add(new Permutation(permutations.get(0).GetPermutation(), permutations.get(0).GetPossibility()));
         List<Permutation>temp = new ArrayList<>();
-        double tempPossibility = 0.0;
         for (Permutation perm : permutations) {
-            /*if (tempPossibility != perm.GetPossibility()) {
-                tempPossibility = perm.GetPossibility();
-                Random r = new Random(System.nanoTime());
-                resultPermutations.add(temp.get(r.nextInt(temp.size())));
-                temp.clear();
-            }
-            temp.add(perm);*/
-
             if (perm.GetPossibility() != resultPermutations.get(resultPermutations.size() - 1).GetPossibility()) {
                 resultPermutations.add(new Permutation(perm.GetPermutation(), perm.GetPossibility()));
             }
